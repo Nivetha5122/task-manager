@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager — API Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">▣</span>
+        <span class="brand-name">Task<span class="accent">Console</span></span>
+      </div>
+
+      <div id="authPanel" class="auth-panel">
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Log in</button>
+          <button class="tab" data-tab="register">Register</button>
+        </div>
+
+        <form id="loginForm" class="form active">
+          <label>Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label>Password
+            <input type="password" name="password" placeholder="••••••••" required />
+          </label>
+          <button type="submit" class="btn primary">Log in</button>
+        </form>
+
+        <form id="registerForm" class="form">
+          <label>Name
+            <input type="text" name="name" placeholder="Jane Doe" required />
+          </label>
+          <label>Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label>Password
+            <input type="password" name="password" placeholder="At least 6 characters" required minlength="6" />
+          </label>
+          <label>Role
+            <select name="role">
+              <option value="user">user</option>
+              <option value="admin">admin</option>
+            </select>
+          </label>
+          <button type="submit" class="btn primary">Create account</button>
+        </form>
+      </div>
+
+      <div id="userPanel" class="user-panel hidden">
+        <div class="user-card">
+          <div class="user-name" id="userName">—</div>
+          <div class="user-email" id="userEmail">—</div>
+          <span class="role-badge" id="userRole">role</span>
+        </div>
+        <div class="filters">
+          <label>Status
+            <select id="filterStatus">
+              <option value="">all</option>
+              <option value="pending">pending</option>
+              <option value="in-progress">in-progress</option>
+              <option value="completed">completed</option>
+            </select>
+          </label>
+          <label>Priority
+            <select id="filterPriority">
+              <option value="">all</option>
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+            </select>
+          </label>
+        </div>
+        <button id="logoutBtn" class="btn ghost">Log out</button>
+      </div>
+
+      <div class="api-base">
+        <label>API base URL
+          <input type="text" id="apiBaseUrl" value="http://localhost:5000/api/v1" />
+        </label>
+        <a href="http://localhost:5000/api-docs" target="_blank" rel="noopener" class="docs-link">View Swagger docs ↗</a>
+      </div>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <main class="main">
+      <header class="topbar">
+        <h1>Tasks</h1>
+        <p class="subtitle" id="subtitle">Log in or register to load your task board.</p>
+      </header>
+
+      <section id="dashboard" class="dashboard hidden">
+        <form id="taskForm" class="task-form">
+          <input type="hidden" name="taskId" />
+          <input type="text" name="title" placeholder="Task title" required minlength="3" maxlength="100" />
+          <input type="text" name="description" placeholder="Description (optional)" maxlength="1000" />
+          <select name="status">
+            <option value="pending">pending</option>
+            <option value="in-progress">in-progress</option>
+            <option value="completed">completed</option>
+          </select>
+          <select name="priority">
+            <option value="low">low</option>
+            <option value="medium" selected>medium</option>
+            <option value="high">high</option>
+          </select>
+          <input type="date" name="dueDate" />
+          <button type="submit" class="btn primary" id="taskSubmitBtn">Add task</button>
+          <button type="button" class="btn ghost hidden" id="taskCancelBtn">Cancel</button>
+        </form>
+
+        <div id="taskList" class="task-list"></div>
+
+        <div class="pagination">
+          <button id="prevPage" class="btn ghost">← Prev</button>
+          <span id="pageInfo">Page 1</span>
+          <button id="nextPage" class="btn ghost">Next →</button>
+        </div>
+      </section>
+
+      <section id="welcome" class="welcome">
+        <div class="welcome-card">
+          <h2>Welcome to the Task Manager Console</h2>
+          <p>
+            This UI exercises every endpoint of the backend API: registration, JWT login,
+            role-based dashboards, and full CRUD on tasks. Register a <code>user</code> account
+            to manage your own tasks, or an <code>admin</code> account to view everyone's tasks.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== Toast / status bar ===== -->
+  <div id="toast" class="toast"></div>
+  <footer class="statusbar">
+    <span class="statusbar-label">last request</span>
+    <span id="lastRequest" class="statusbar-value">—</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
